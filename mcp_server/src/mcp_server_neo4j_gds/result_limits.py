@@ -63,8 +63,10 @@ def limit_text(text: str) -> str:
 
     return (
         f"Warning: output truncated to {char_limit} characters to keep the MCP server "
-        "responsive. Use narrower filters, mutate mode plus graph accessor tools, or "
-        "request a smaller result.\n\n"
+        "responsive. Consider running the algorithm in mutate mode, "
+        "then use a Cypher query to stream the mutated properties with "
+        "gds.graph.nodeProperties.stream or gds.graph.relationshipProperties.stream. "
+        "Use YIELD and WHERE to filter rows before returning them.\n\n"
         f"{text[:char_limit]}\n\n"
         f"[truncated {len(text) - char_limit} characters]"
     )
