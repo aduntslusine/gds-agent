@@ -36,7 +36,7 @@ def _as_node_pairs(gds, node_id_pairs):
     node_ids = [node_id for pair in node_id_pairs for node_id in pair]
     if not node_ids:
         return []
-    nodes = iter(gds.util.asNodes(node_ids))
+    nodes = iter(gds.util.as_nodes(node_ids))
     return list(zip(nodes, nodes))
 
 
@@ -63,12 +63,12 @@ class DijkstraShortestPathHandler(AlgorithmHandler):
         logger.info(f"Dijkstra single-source shortest path parameters: {params}")
 
         if mode == "mutate":
-            result = self.gds.shortestPath.dijkstra.mutate(
-                G, sourceNode=start_node_id, targetNode=end_node_id, **params
+            result = self.gds.shortest_path.dijkstra.mutate(
+                G, source_node=start_node_id, target_node=end_node_id, **params
             )
         else:
-            path_data = self.gds.shortestPath.dijkstra.stream(
-                G, sourceNode=start_node_id, targetNode=end_node_id, **params
+            path_data = self.gds.shortest_path.dijkstra.stream(
+                G, source_node=start_node_id, target_node=end_node_id, **params
             )
 
             if path_data.empty:
@@ -88,7 +88,7 @@ class DijkstraShortestPathHandler(AlgorithmHandler):
                 costs = costs.tolist()
 
             # Get node names using GDS utility function
-            node_names = self.gds.util.asNodes(node_ids)
+            node_names = self.gds.util.as_nodes(node_ids)
 
             return {
                 "totalCost": float(path_data["totalCost"].iloc[0]),
@@ -131,12 +131,12 @@ class DeltaSteppingShortestPathHandler(AlgorithmHandler):
         logger.info(f"Delta-Stepping shortest path parameters: {params}")
 
         if mode == "mutate":
-            result = self.gds.allShortestPaths.delta.mutate(
-                G, sourceNode=source_node_id, **params
+            result = self.gds.all_shortest_paths.delta.mutate(
+                G, source_node=source_node_id, **params
             )
         else:
-            path_data = self.gds.allShortestPaths.delta.stream(
-                G, sourceNode=source_node_id, **params
+            path_data = self.gds.all_shortest_paths.delta.stream(
+                G, source_node=source_node_id, **params
             )
 
             if path_data.empty:
@@ -163,8 +163,8 @@ class DeltaSteppingShortestPathHandler(AlgorithmHandler):
                     costs = costs.tolist()
 
                 # Get node names using GDS utility function
-                target_node_name = self.gds.util.asNode(target_node_id)
-                node_names = self.gds.util.asNodes(node_ids)
+                target_node_name = self.gds.util.as_node(target_node_id)
+                node_names = self.gds.util.as_nodes(node_ids)
 
                 result_data.append(
                     {
@@ -181,7 +181,7 @@ class DeltaSteppingShortestPathHandler(AlgorithmHandler):
             return {
                 "found": True,
                 "sourceNodeId": source_node_id,
-                "sourceNodeName": self.gds.util.asNode(source_node_id),
+                "sourceNodeName": self.gds.util.as_node(source_node_id),
                 "results": result_data,
             }
 
@@ -218,12 +218,12 @@ class DijkstraSingleSourceShortestPathHandler(AlgorithmHandler):
         logger.info(f"Dijkstra single-source shortest path parameters: {params}")
 
         if mode == "mutate":
-            result = self.gds.allShortestPaths.dijkstra.mutate(
-                G, sourceNode=source_node_id, **params
+            result = self.gds.all_shortest_paths.dijkstra.mutate(
+                G, source_node=source_node_id, **params
             )
         else:
-            path_data = self.gds.allShortestPaths.dijkstra.stream(
-                G, sourceNode=source_node_id, **params
+            path_data = self.gds.all_shortest_paths.dijkstra.stream(
+                G, source_node=source_node_id, **params
             )
 
             if path_data.empty:
@@ -250,8 +250,8 @@ class DijkstraSingleSourceShortestPathHandler(AlgorithmHandler):
                     costs = costs.tolist()
 
                 # Get node names using GDS utility function
-                target_node_name = self.gds.util.asNode(target_node_id)
-                node_names = self.gds.util.asNodes(node_ids)
+                target_node_name = self.gds.util.as_node(target_node_id)
+                node_names = self.gds.util.as_nodes(node_ids)
 
                 result_data.append(
                     {
@@ -268,7 +268,7 @@ class DijkstraSingleSourceShortestPathHandler(AlgorithmHandler):
             return {
                 "found": True,
                 "sourceNodeId": source_node_id,
-                "sourceNodeName": self.gds.util.asNode(source_node_id),
+                "sourceNodeName": self.gds.util.as_node(source_node_id),
                 "results": result_data,
             }
 
@@ -312,12 +312,12 @@ class AStarShortestPathHandler(AlgorithmHandler):
         logger.info(f"A* shortest path parameters: {params}")
 
         if mode == "mutate":
-            result = self.gds.shortestPath.astar.mutate(
-                G, sourceNode=source_node_id, targetNode=target_node_id, **params
+            result = self.gds.shortest_path.a_star.mutate(
+                G, source_node=source_node_id, target_node=target_node_id, **params
             )
         else:
-            path_data = self.gds.shortestPath.astar.stream(
-                G, sourceNode=source_node_id, targetNode=target_node_id, **params
+            path_data = self.gds.shortest_path.a_star.stream(
+                G, source_node=source_node_id, target_node=target_node_id, **params
             )
 
             if path_data.empty:
@@ -337,7 +337,7 @@ class AStarShortestPathHandler(AlgorithmHandler):
                 costs = costs.tolist()
 
             # Get node names using GDS utility function
-            node_names = self.gds.util.asNodes(node_ids)
+            node_names = self.gds.util.as_nodes(node_ids)
 
             return {
                 "totalCost": float(path_data["totalCost"].iloc[0]),
@@ -390,12 +390,12 @@ class YensShortestPathsHandler(AlgorithmHandler):
         logger.info(f"Yen's shortest paths parameters: {params}")
 
         if mode == "mutate":
-            result = self.gds.shortestPath.yens.mutate(
-                G, sourceNode=source_node_id, targetNode=target_node_id, **params
+            result = self.gds.shortest_path.yens.mutate(
+                G, source_node=source_node_id, target_node=target_node_id, **params
             )
         else:
-            path_data = self.gds.shortestPath.yens.stream(
-                G, sourceNode=source_node_id, targetNode=target_node_id, **params
+            path_data = self.gds.shortest_path.yens.stream(
+                G, source_node=source_node_id, target_node=target_node_id, **params
             )
 
             if path_data.empty:
@@ -418,7 +418,7 @@ class YensShortestPathsHandler(AlgorithmHandler):
                     costs = costs.tolist()
 
                 # Get node names using GDS utility function
-                node_names = self.gds.util.asNodes(node_ids)
+                node_names = self.gds.util.as_nodes(node_ids)
 
                 result_data.append(
                     {
@@ -434,9 +434,9 @@ class YensShortestPathsHandler(AlgorithmHandler):
             return {
                 "found": True,
                 "sourceNodeId": source_node_id,
-                "sourceNodeName": self.gds.util.asNode(source_node_id),
+                "sourceNodeName": self.gds.util.as_node(source_node_id),
                 "targetNodeId": target_node_id,
-                "targetNodeName": self.gds.util.asNode(target_node_id),
+                "targetNodeName": self.gds.util.as_node(target_node_id),
                 "results": result_data,
                 "totalResults": len(result_data),
             }
@@ -475,12 +475,12 @@ class MinimumWeightSpanningTreeHandler(AlgorithmHandler):
         logger.info(f"Minimum Weight Spanning Tree parameters: {params}")
 
         if mode == "mutate":
-            result = self.gds.spanningTree.mutate(
-                G, sourceNode=source_node_id, **params
+            result = self.gds.spanning_tree.mutate(
+                G, source_node=source_node_id, **params
             )
         else:
-            mst_data = self.gds.spanningTree.stream(
-                G, sourceNode=source_node_id, **params
+            mst_data = self.gds.spanning_tree.stream(
+                G, source_node=source_node_id, **params
             )
 
             if mst_data.empty:
@@ -581,7 +581,7 @@ class MinimumDirectedSteinerTreeHandler(AlgorithmHandler):
             if target_node_id is not None:
                 target_node_ids.append(target_node_id)
                 target_node_names.append(
-                    self.gds.util.asNode(target_node_id).get(node_identifier_property)
+                    self.gds.util.as_node(target_node_id).get(node_identifier_property)
                 )
             else:
                 unmatched_targets.append(target_name)
@@ -601,8 +601,8 @@ class MinimumDirectedSteinerTreeHandler(AlgorithmHandler):
         logger.info(f"Minimum Directed Steiner Tree parameters: {params}")
 
         # Run the steiner tree algorithm
-        steiner_data = self.gds.steinerTree.stream(
-            G, sourceNode=source_node_id, targetNodes=target_node_ids, **params
+        steiner_data = self.gds.steiner_tree.stream(
+            G, source_node=source_node_id, target_nodes=target_node_ids, **params
         )
 
         if steiner_data.empty:
@@ -671,7 +671,7 @@ class PrizeCollectingSteinerTreeHandler(AlgorithmHandler):
         logger.info(f"Prize-Collecting Steiner Tree parameters: {params}")
 
         # Run the prize-collecting steiner tree algorithm
-        steiner_data = self.gds.prizeSteinerTree.stream(G, **params)
+        steiner_data = self.gds.prize_steiner_tree.stream(G, **params)
 
         if steiner_data.empty:
             return {
@@ -735,16 +735,16 @@ class AllPairsShortestPathsHandler(AlgorithmHandler):
         logger.info(f"All Pairs Shortest Paths parameters: {params}")
 
         # Run the all pairs shortest paths algorithm
-        apsp_data = self.gds.allShortestPaths.stream(G, **params)
+        apsp_data = self.gds.all_shortest_paths.stream(G, **params)
 
         if apsp_data.empty:
             return {"found": False, "message": "No shortest paths found"}
 
         # Get node names using GDS utility function (batch operation)
-        apsp_data["sourceNodeName"] = self.gds.util.asNodes(
+        apsp_data["sourceNodeName"] = self.gds.util.as_nodes(
             apsp_data["sourceNodeId"].tolist()
         )
-        apsp_data["targetNodeName"] = self.gds.util.asNodes(
+        apsp_data["targetNodeName"] = self.gds.util.as_nodes(
             apsp_data["targetNodeId"].tolist()
         )
 
@@ -801,15 +801,15 @@ class RandomWalkHandler(AlgorithmHandler):
 
         # Add source nodes if found
         if source_node_ids:
-            params["sourceNodes"] = source_node_ids
+            params["source_nodes"] = source_node_ids
 
         logger.info(f"Random Walk parameters: {params}")
 
         if mode == "mutate":
-            result = self.gds.randomWalk.mutate(G, **params)
+            result = self.gds.random_walk.mutate(G, **params)
         else:
             # Run the random walk algorithm
-            walk_data = self.gds.randomWalk.stream(G, **params)
+            walk_data = self.gds.random_walk.stream(G, **params)
 
             if walk_data.empty:
                 return {"found": False, "message": "No random walks generated"}
@@ -824,7 +824,7 @@ class RandomWalkHandler(AlgorithmHandler):
                     node_ids = node_ids.tolist()
 
                 # Get node names using GDS utility function
-                node_names = self.gds.util.asNodes(node_ids)
+                node_names = self.gds.util.as_nodes(node_ids)
 
                 walks.append(
                     {
@@ -890,15 +890,15 @@ class BreadthFirstSearchHandler(AlgorithmHandler):
 
         # Add target nodes if found
         if target_node_ids:
-            params["targetNodes"] = target_node_ids
+            params["target_nodes"] = target_node_ids
 
         logger.info(f"Breadth First Search parameters: {params}")
 
         if mode == "mutate":
-            result = self.gds.bfs.mutate(G, sourceNode=source_node_id, **params)
+            result = self.gds.bfs.mutate(G, source_node=source_node_id, **params)
         else:
             # Run the breadth first search algorithm
-            bfs_data = self.gds.bfs.stream(G, sourceNode=source_node_id, **params)
+            bfs_data = self.gds.bfs.stream(G, source_node=source_node_id, **params)
 
             if bfs_data.empty:
                 return {
@@ -918,7 +918,7 @@ class BreadthFirstSearchHandler(AlgorithmHandler):
                     node_ids = node_ids.tolist()
 
                 # Get node names using GDS utility function
-                node_names = self.gds.util.asNodes(node_ids)
+                node_names = self.gds.util.as_nodes(node_ids)
 
                 traversals.append(
                     {
@@ -978,15 +978,15 @@ class DepthFirstSearchHandler(AlgorithmHandler):
         params = clean_params(kwargs, ["graphName", "nodeIdentifierProperty", "mode"])
         # Add target nodes if found
         if target_node_ids:
-            params["targetNodes"] = target_node_ids
+            params["target_nodes"] = target_node_ids
 
         logger.info(f"Depth First Search parameters: {params}")
 
         if mode == "mutate":
-            result = self.gds.dfs.mutate(G, sourceNode=source_node_id, **params)
+            result = self.gds.dfs.mutate(G, source_node=source_node_id, **params)
         else:
             # Run the depth first search algorithm
-            dfs_data = self.gds.dfs.stream(G, sourceNode=source_node_id, **params)
+            dfs_data = self.gds.dfs.stream(G, source_node=source_node_id, **params)
 
             if dfs_data.empty:
                 return {
@@ -1006,7 +1006,7 @@ class DepthFirstSearchHandler(AlgorithmHandler):
                     node_ids = node_ids.tolist()
 
                 # Get node names using GDS utility function
-                node_names = self.gds.util.asNodes(node_ids)
+                node_names = self.gds.util.as_nodes(node_ids)
 
                 traversals.append(
                     {
@@ -1056,11 +1056,13 @@ class BellmanFordSingleSourceShortestPathHandler(AlgorithmHandler):
         logger.info(f"Bellman-Ford Single-Source Shortest Path parameters: {params}")
 
         if mode == "mutate":
-            result = self.gds.bellmanFord.mutate(G, sourceNode=source_node_id, **params)
+            result = self.gds.bellman_ford.mutate(
+                G, source_node=source_node_id, **params
+            )
         else:
             # Run the Bellman-Ford algorithm
-            bellman_ford_data = self.gds.bellmanFord.stream(
-                G, sourceNode=source_node_id, **params
+            bellman_ford_data = self.gds.bellman_ford.stream(
+                G, source_node=source_node_id, **params
             )
 
             if bellman_ford_data.empty:
@@ -1088,7 +1090,7 @@ class BellmanFordSingleSourceShortestPathHandler(AlgorithmHandler):
                     costs = costs.tolist()
 
                 # Get node names using GDS utility function
-                node_names = self.gds.util.asNodes(node_ids)
+                node_names = self.gds.util.as_nodes(node_ids)
 
                 paths.append(
                     {
@@ -1151,7 +1153,7 @@ class LongestPathHandler(AlgorithmHandler):
         logger.info(f"Longest Path parameters: {params}")
 
         # Run the longest path algorithm
-        longest_path_data = self.gds.dag.longestPath.stream(G, **params)
+        longest_path_data = self.gds.dag.longest_path.stream(G, **params)
 
         if longest_path_data.empty:
             return {
@@ -1181,7 +1183,7 @@ class LongestPathHandler(AlgorithmHandler):
                 costs = costs.tolist()
 
             # Get node names using GDS utility function
-            node_names = self.gds.util.asNodes(node_ids)
+            node_names = self.gds.util.as_nodes(node_ids)
 
             paths.append(
                 {
@@ -1236,7 +1238,7 @@ class MaxFlowHandler(AlgorithmHandler):
             if source_node_id is not None:
                 source_node_ids.append(source_node_id)
                 source_node_names.append(
-                    self.gds.util.asNode(source_node_id).get(node_identifier_property)
+                    self.gds.util.as_node(source_node_id).get(node_identifier_property)
                 )
             else:
                 unmatched_sources.append(source_name)
@@ -1269,7 +1271,7 @@ class MaxFlowHandler(AlgorithmHandler):
             if target_node_id is not None:
                 target_node_ids.append(target_node_id)
                 target_node_names.append(
-                    self.gds.util.asNode(target_node_id).get(node_identifier_property)
+                    self.gds.util.as_node(target_node_id).get(node_identifier_property)
                 )
             else:
                 unmatched_targets.append(target_name)
@@ -1289,19 +1291,19 @@ class MaxFlowHandler(AlgorithmHandler):
         logger.info(f"Max Flow parameters: {params}")
 
         if mode == "mutate":
-            result = self.gds.maxFlow.mutate(
-                G, sourceNodes=source_node_ids, targetNodes=target_node_ids, **params
+            result = self.gds.max_flow.mutate(
+                G, source_nodes=source_node_ids, target_nodes=target_node_ids, **params
             )
         else:
-            max_flow_data = self.gds.maxFlow.stream(
-                G, sourceNodes=source_node_ids, targetNodes=target_node_ids, **params
+            max_flow_data = self.gds.max_flow.stream(
+                G, source_nodes=source_node_ids, target_nodes=target_node_ids, **params
             )
 
             # Get node names using GDS utility function (batch operation)
-            max_flow_data["sourceNodeName"] = self.gds.util.asNodes(
+            max_flow_data["sourceNodeName"] = self.gds.util.as_nodes(
                 max_flow_data["source"].tolist()
             )
-            max_flow_data["targetNodeName"] = self.gds.util.asNodes(
+            max_flow_data["targetNodeName"] = self.gds.util.as_nodes(
                 max_flow_data["target"].tolist()
             )
 
